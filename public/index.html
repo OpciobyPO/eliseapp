@@ -1,80 +1,42 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Note d'honoraire</title>
-    <style>
-      body {
-        font-family: sans-serif;
-        max-width: 600px;
-        margin: 3rem auto;
-        padding: 1rem;
-        background: #f9f9f9;
-      }
-      label {
-        display: block;
-        margin-top: 1rem;
-        font-weight: bold;
-      }
-      input {
-        width: 100%;
-        padding: 0.6rem;
-        margin-top: 0.3rem;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-        font-size: 1rem;
-      }
-      button {
-        margin-top: 2rem;
-        width: 100%;
-        padding: 1rem;
-        font-size: 1rem;
-        background-color: #111827;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-      }
-      #message {
-        margin-top: 1rem;
-        font-weight: bold;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Envoyer une note d'honoraire</h1>
+<head>
+  <meta charset="UTF-8">
+  <title>Envoyer une note d'honoraires</title>
+</head>
+<body>
 
-    <form id="note-form">
-      <label for="prenom">Prénom du patient</label>
-      <input type="text" id="prenom" name="prenom" required />
+  <h1>Envoyer une note d'honoraires</h1>
 
-      <label for="nom">Nom du patient</label>
-      <input type="text" id="nom" name="nom" required />
+  <form id="monFormulaire">
+    <input type="text" id="prenom" placeholder="Prénom patient" required><br><br>
+    <input type="text" id="nom" placeholder="Nom patient" required><br><br>
+    <input type="text" id="secu" placeholder="Numéro Sécurité Sociale" required><br><br>
+    <input type="text" id="contrat" placeholder="Numéro de contrat d'assurance"><br><br>
+    <input type="email" id="email" placeholder="Email du patient" required><br><br>
 
-      <label for="secu">Numéro de sécurité sociale</label>
-      <input type="text" id="secu" name="secu" required />
+    <button type="submit">Envoyer la note</button>
+  </form>
 
-      <label for="email">Email du patient</label>
-      <input type="email" id="email" name="email" required />
+  <script>
+    // Récupère les infos Cabinet enregistrées
+    function getOsteoSettings() {
+      const settings = JSON.parse(localStorage.getItem('osteopatheSettings'));
+      return settings || {};
+    }
 
-      <button type="submit">Envoyer la note</button>
-    </form>
-
-    <div id="message"></div>
-
-    <script>
-      const form = document.getElementById('note-form');
-      const message = document.getElementById('message');
+    // Quand on soumet le formulaire
+    document.getElementById('monFormulaire').addEventListener('submit', async function(e) {
+      e.preventDefault();
 
       const settings = getOsteoSettings();
-    
+
       const data = {
         prenom: document.getElementById('prenom').value,
         nom: document.getElementById('nom').value,
         secu: document.getElementById('secu').value,
-        email: document.getElementById('email').value,
         contrat: document.getElementById('contrat').value,
+        email: document.getElementById('email').value,
         cabinet: settings.nomOsteo,
         adresse: settings.adresse,
         telephone: settings.telephone,
@@ -82,48 +44,28 @@
         siret: settings.siret,
         adeli: settings.adeli
       };
-      
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        message.textContent = "";
 
-        const data = {
-          prenom: form.prenom.value.trim(),
-          nom: form.nom.value.trim(),
-          secu: form.secu.value.trim(),
-          email: form.email.value.trim()
-        };
+      try {
+        const response = await fetch('/api/send-note', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
 
-        message.textContent = "Envoi en cours...";
-
-        try {
-          const res = await fetch('/api/send-note', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          });
-
-          if (res.ok) {
-            message.textContent = `Note envoyée avec succès à ${data.email}`;
-            form.reset();
-          } else {
-            message.textContent = "Erreur lors de l'envoi.";
-          }
-        } catch (err) {
-          message.textContent = "Erreur réseau.";
+        const result = await response.json();
+        if (response.ok) {
+          alert('Note envoyée avec succès ✅');
+        } else {
+          alert('Erreur lors de l\'envoi : ' + result.error);
         }
-      });
-    </script>
-    <button type="button" onclick="window.open('note.html', '_blank')">
-  Voir la note d'honoraires
-    </button>
+      } catch (err) {
+        console.error('Erreur fetch :', err);
+        alert('Erreur réseau');
+      }
+    });
+  </script>
 
-    <script>
-    function getOsteoSettings() {
-      const settings = JSON.parse(localStorage.getItem('osteopatheSettings'));
-      return settings || {}; // Si jamais rien n'est encore enregistré
-    }
-    </script>
-
-  </body>
+</body>
 </html>
