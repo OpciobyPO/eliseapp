@@ -4,6 +4,5 @@
   "type": "module",
   "dependencies": {
     "nodemailer": "^6.9.1",
-    "puppeteer": "^21.3.8"
   }
 }
