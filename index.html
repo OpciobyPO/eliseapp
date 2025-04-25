@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Note d'honoraire</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        max-width: 600px;
+        margin: 3rem auto;
+        padding: 1rem;
+        background: #f9f9f9;
+      }
+      label {
+        display: block;
+        margin-top: 1rem;
+        font-weight: bold;
+      }
+      input {
+        width: 100%;
+        padding: 0.6rem;
+        margin-top: 0.3rem;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+      }
+      button {
+        margin-top: 2rem;
+        width: 100%;
+        padding: 1rem;
+        font-size: 1rem;
+        background-color: #111827;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      #message {
+        margin-top: 1rem;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Envoyer une note d'honoraire</h1>
+
+    <form id="note-form">
+      <label for="prenom">Prénom du patient</label>
+      <input type="text" id="prenom" name="prenom" required />
+
+      <label for="nom">Nom du patient</label>
+      <input type="text" id="nom" name="nom" required />
+
+      <label for="secu">Numéro de sécurité sociale</label>
+      <input type="text" id="secu" name="secu" required />
+
+      <label for="email">Email du patient</label>
+      <input type="email" id="email" name="email" required />
+
+      <button type="submit">Envoyer la note</button>
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+      const form = document.getElementById('note-form');
+      const message = document.getElementById('message');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        message.textContent = "";
+
+        const data = {
+          prenom: form.prenom.value.trim(),
+          nom: form.nom.value.trim(),
+          secu: form.secu.value.trim(),
+          email: form.email.value.trim()
+        };
+
+        message.textContent = "Envoi en cours...";
+
+        try {
+          const res = await fetch('/api/send-note', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+
+          if (res.ok) {
+            message.textContent = `Note envoyée avec succès à ${data.email}`;
+            form.reset();
+          } else {
+            message.textContent = "Erreur lors de l'envoi.";
+          }
+        } catch (err) {
+          message.textContent = "Erreur réseau.";
+        }
+      });
+    </script>
+  </body>
+</html>
