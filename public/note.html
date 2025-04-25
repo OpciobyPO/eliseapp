@@ -1,137 +1,170 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <title>Note d'honoraires - Élise Cévenes Colliou</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 700px;
-      margin: 50px auto;
-      padding: 30px;
-      background-color: #f9f9f9;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-    }
-    h1, h2 {
-      text-align: center;
-    }
-    p {
-      margin: 10px 0;
-    }
-    .section {
-      margin-bottom: 20px;
-    }
-    hr {
-      margin: 30px 0;
-    }
-  </style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Paramétrage Cabinet - Note d'honoraires</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        max-width: 600px;
+        margin: 3rem auto;
+        padding: 1rem;
+        background: #f9f9f9;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      label {
+        display: block;
+        margin-top: 1rem;
+        font-weight: bold;
+      }
+      input {
+        width: 100%;
+        padding: 0.6rem;
+        margin-top: 0.3rem;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+      }
+      button {
+        margin-top: 2rem;
+        width: 100%;
+        padding: 1rem;
+        font-size: 1rem;
+        background-color: #111827;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      #noteAffichee {
+        margin-top: 2rem;
+        background: white;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      }
+      #noteAffichee h2 {
+        margin-top: 1.5rem;
+      }
+      #signatureDisplay img {
+        max-width: 200px;
+        margin-top: 1rem;
+      }
+    </style>
+  </head>
 
-  <form id="noteForm">
-  <h3>Informations Cabinet</h3>
-  <input type="text" id="nomOsteo" placeholder="Nom Ostéo" />
-  <input type="text" id="adresseOsteo" placeholder="Adresse" />
-  <input type="text" id="telephoneOsteo" placeholder="Téléphone" />
+  <body>
+    <h1>Paramétrer vos informations</h1>
 
-  <h3>Note d'honoraires</h3>
-  <input type="text" id="prix" placeholder="Honoraires (€)" value="60" />
+    <form id="noteForm">
+      <label for="nomOsteo">Nom Ostéo</label>
+      <input type="text" id="nomOsteo" placeholder="Nom Ostéo" />
 
-  <h3>Informations Patient</h3>
-  <input type="text" id="patient" placeholder="Nom du patient" />
-  <input type="text" id="secu" placeholder="Numéro de sécurité sociale" />
-  <input type="text" id="contrat" placeholder="N° contrat assurance" />
+      <label for="adresseOsteo">Adresse</label>
+      <input type="text" id="adresseOsteo" placeholder="Adresse" />
 
-  <h3>Ostéopathe</h3>
-  <input type="text" id="nomOsteo2" placeholder="Nom Ostéo" />
-  <input type="text" id="siret" placeholder="SIRET" />
-  <input type="text" id="adeli" placeholder="ADELI" />
+      <label for="telephoneOsteo">Téléphone</label>
+      <input type="text" id="telephoneOsteo" placeholder="Téléphone" />
 
-  <h3>Signature</h3>
-  <input type="file" id="signature" accept="image/*" />
+      <label for="prix">Honoraires (€)</label>
+      <input type="text" id="prix" placeholder="Honoraires" value="60" />
 
-  <br><br>
-  <button type="button" onclick="updateNote()">Mettre à jour la note</button>
-</form>
+      <label for="patient">Nom du patient</label>
+      <input type="text" id="patient" placeholder="Nom du patient" />
 
-<div id="noteAffichee">
-  <h1>Cabinet d'Ostéopathie</h1>
-  <h2 id="nomOsteoDisplay"></h2>
-  <p id="adresseOsteoDisplay"></p>
-  <p id="telephoneOsteoDisplay"></p>
+      <label for="secu">Numéro de sécurité sociale</label>
+      <input type="text" id="secu" placeholder="Numéro de sécurité sociale" />
 
-  <hr>
+      <label for="contrat">N° contrat assurance</label>
+      <input type="text" id="contrat" placeholder="N° contrat assurance" />
 
-  <h2>Note d'honoraires</h2>
-  <p><strong>Date :</strong> <span id="dateDuJour"></span></p>
-  <p><strong>Acte :</strong> Consultation d'ostéopathie</p>
-  <p><strong>Honoraires :</strong> <span id="prixDisplay">60€</span></p>
+      <label for="nomOsteo2">Nom Ostéo (en bas)</label>
+      <input type="text" id="nomOsteo2" placeholder="Nom Ostéo" />
 
-  <hr>
+      <label for="siret">SIRET</label>
+      <input type="text" id="siret" placeholder="SIRET" />
 
-  <h2>Informations Patient</h2>
-  <p><strong>Patient :</strong> <span id="patientDisplay"></span></p>
-  <p><strong>Numéro de Sécurité Sociale :</strong> <span id="secuDisplay"></span></p>
-  <p><strong>Numéro de contrat d'assurance :</strong> <span id="contratDisplay"></span></p>
+      <label for="adeli">ADELI</label>
+      <input type="text" id="adeli" placeholder="ADELI" />
 
-  <hr>
+      <label for="signature">Signature (image)</label>
+      <input type="file" id="signature" accept="image/*" />
 
-  <h2>Ostéopathe</h2>
-  <p><strong>Nom :</strong> <span id="nomOsteo2Display"></span></p>
-  <p><strong>Numéro SIRET :</strong> <span id="siretDisplay"></span></p>
-  <p><strong>Numéro ADELI :</strong> <span id="adeliDisplay"></span></p>
+      <button type="button" onclick="updateAndSave()">Mettre à jour la note</button>
+    </form>
 
-  <div id="signatureDisplay" style="margin-top:20px;"></div>
-</div>
+    <div id="noteAffichee">
+      <h1>Cabinet d'Ostéopathie</h1>
+      <h2 id="nomOsteoDisplay"></h2>
+      <p id="adresseOsteoDisplay"></p>
+      <p id="telephoneOsteoDisplay"></p>
 
-<button type="button" onclick="saveSettings()">Enregistrer</button>
+      <hr>
 
-<script>
-function updateNote() {
-  document.getElementById('nomOsteoDisplay').innerText = document.getElementById('nomOsteo').value;
-  document.getElementById('adresseOsteoDisplay').innerText = document.getElementById('adresseOsteo').value;
-  document.getElementById('telephoneOsteoDisplay').innerText = document.getElementById('telephoneOsteo').value;
+      <h2>Note d'honoraires</h2>
+      <p><strong>Date :</strong> <span id="dateDuJour"></span></p>
+      <p><strong>Acte :</strong> Consultation d'ostéopathie</p>
+      <p><strong>Honoraires :</strong> <span id="prixDisplay">60€</span></p>
 
-  document.getElementById('prixDisplay').innerText = document.getElementById('prix').value + "€";
+      <hr>
 
-  document.getElementById('patientDisplay').innerText = document.getElementById('patient').value;
-  document.getElementById('secuDisplay').innerText = document.getElementById('secu').value;
-  document.getElementById('contratDisplay').innerText = document.getElementById('contrat').value;
+      <h2>Informations Patient</h2>
+      <p><strong>Patient :</strong> <span id="patientDisplay"></span></p>
+      <p><strong>Numéro de Sécurité Sociale :</strong> <span id="secuDisplay"></span></p>
+      <p><strong>Numéro de contrat d'assurance :</strong> <span id="contratDisplay"></span></p>
 
-  document.getElementById('nomOsteo2Display').innerText = document.getElementById('nomOsteo2').value;
-  document.getElementById('siretDisplay').innerText = document.getElementById('siret').value;
-  document.getElementById('adeliDisplay').innerText = document.getElementById('adeli').value;
+      <hr>
 
-  const file = document.getElementById('signature').files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      document.getElementById('signatureDisplay').innerHTML = `<img src="${e.target.result}" alt="Signature" style="max-width:200px;">`;
-    };
-    reader.readAsDataURL(file);
-  }
-}
+      <h2>Ostéopathe</h2>
+      <p><strong>Nom :</strong> <span id="nomOsteo2Display"></span></p>
+      <p><strong>Numéro SIRET :</strong> <span id="siretDisplay"></span></p>
+      <p><strong>Numéro ADELI :</strong> <span id="adeliDisplay"></span></p>
 
-window.onload = function() {
-  document.getElementById('dateDuJour').innerText = new Date().toLocaleDateString();
-}
-</script>
+      <div id="signatureDisplay"></div>
+    </div>
 
-<script>
-function saveSettings() {
-  const settings = {
-    nomOsteo: document.getElementById('nomOsteo').value,
-    adresse: document.getElementById('adresseOsteo').value,
-    telephone: document.getElementById('telephoneOsteo').value,
-    prix: document.getElementById('prix').value,
-    nomOsteo2: document.getElementById('nomOsteo2').value,
-    siret: document.getElementById('siret').value,
-    adeli: document.getElementById('adeli').value
-  };
-  localStorage.setItem('osteopatheSettings', JSON.stringify(settings));
-  alert('Paramètres enregistrés avec succès !');
-}
-</script>
-</body>
+    <script>
+      function updateAndSave() {
+        document.getElementById('nomOsteoDisplay').innerText = document.getElementById('nomOsteo').value;
+        document.getElementById('adresseOsteoDisplay').innerText = document.getElementById('adresseOsteo').value;
+        document.getElementById('telephoneOsteoDisplay').innerText = document.getElementById('telephoneOsteo').value;
+        document.getElementById('prixDisplay').innerText = document.getElementById('prix').value + "€";
+        document.getElementById('patientDisplay').innerText = document.getElementById('patient').value;
+        document.getElementById('secuDisplay').innerText = document.getElementById('secu').value;
+        document.getElementById('contratDisplay').innerText = document.getElementById('contrat').value;
+        document.getElementById('nomOsteo2Display').innerText = document.getElementById('nomOsteo2').value;
+        document.getElementById('siretDisplay').innerText = document.getElementById('siret').value;
+        document.getElementById('adeliDisplay').innerText = document.getElementById('adeli').value;
+
+        const file = document.getElementById('signature').files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            document.getElementById('signatureDisplay').innerHTML = `<img src="${e.target.result}" alt="Signature">`;
+          };
+          reader.readAsDataURL(file);
+        }
+
+        const settings = {
+          nomOsteo: document.getElementById('nomOsteo').value,
+          adresse: document.getElementById('adresseOsteo').value,
+          telephone: document.getElementById('telephoneOsteo').value,
+          prix: document.getElementById('prix').value,
+          nomOsteo2: document.getElementById('nomOsteo2').value,
+          siret: document.getElementById('siret').value,
+          adeli: document.getElementById('adeli').value
+        };
+        localStorage.setItem('osteopatheSettings', JSON.stringify(settings));
+        alert('Paramètres enregistrés avec succès !');
+      }
+
+      window.onload = function() {
+        document.getElementById('dateDuJour').innerText = new Date().toLocaleDateString();
+      }
+    </script>
+  </body>
 </html>
