@@ -74,18 +74,17 @@ export default async function handler(req, res) {
 
     y -= 50;
 
-    // Bloc Ostéopathe
-    page.drawText('Ostéopathe :', { x: 50, y: y, size: 12, font: fontBold });
-    y -= 20;
-    page.drawText(`${cabinet}`, { x: 50, y: y, size: 12, font: font });
-    y -= 20;
-    page.drawText('Ostéopathe D.O.', { x: 50, y: y, size: 12, font: font });
-    y -= 30;
-    page.drawText(`N° SIRET : ${siret}`, { x: 50, y: y, size: 12, font: font });
-    y -= 20;
-    page.drawText(`N° ADELI : ${adeli}`, { x: 50, y: y, size: 12, font: font });
-    y -= 20;
-    page.drawText(`N° TEL : ${telephone}`, { x: 50, y: y, size: 12, font: font });
+
+
+    // Bloc Ostéopathe tout en bas de la page
+    const blocOsteoY = 100; // Position fixe à 100px du bas
+    
+    page.drawText('Ostéopathe :', { x: 50, y: blocOsteoY + 80, size: 12, font: fontBold });
+    page.drawText(`${cabinet}`, { x: 50, y: blocOsteoY + 60, size: 12, font: font });
+    page.drawText('Ostéopathe D.O.', { x: 50, y: blocOsteoY + 40, size: 12, font: font });
+    page.drawText(`N° SIRET : ${siret}`, { x: 50, y: blocOsteoY + 20, size: 12, font: font });
+    page.drawText(`N° ADELI : ${adeli}`, { x: 50, y: blocOsteoY, size: 12, font: font });
+    page.drawText(`N° TEL : ${telephone}`, { x: 50, y: blocOsteoY - 20, size: 12, font: font });
 
     const pdfBytes = await pdfDoc.save();
 
