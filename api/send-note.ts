@@ -2,7 +2,7 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import nodemailer from 'nodemailer';
 
 export default async function handler(req, res) {
-  const { prenom, nom, secu, email, contrat, cabinet, adresse, telephone, prix, siret, adeli } = req.body;
+  const { prenom, nom, secu, email, contrat, cabinet, adresse, telephone, prix, siret, adeli, emailosteo } = req.body;
 
   try {
     const pdfDoc = await PDFDocument.create();
