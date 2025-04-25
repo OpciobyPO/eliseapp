@@ -100,7 +100,7 @@ export default async function handler(req, res) {
     await transporter.sendMail({
       from: `"Cabinet Ostéo" <${process.env.EMAIL_FROM}>`,
       to: email,
-      cc: emailOsteo ? emailOsteo : undefined, // 🆕 si ostéo a mis un mail, sinon pas de cc
+      cc: emailOsteo, // 🆕 si ostéo a mis un mail, sinon pas de cc
       subject: `Votre note d'honoraire – ${prenom} ${nom}`,
       text: 'Veuillez trouver votre note d\'honoraire en pièce jointe.',
       attachments: [
