@@ -1,75 +1,83 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <title>Envoyer une note d'honoraires</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
-      margin: 0;
-      padding: 30px;
-      display: flex;
-      justify-content: center;
-    }
-    .container {
-      background: white;
-      padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      max-width: 700px;
-      width: 100%;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    form input, form button {
-      display: block;
-      width: 100%;
-      margin-bottom: 20px;
-      padding: 12px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    form button {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    form button:hover {
-      background-color: #45a049;
-    }
-    #modifierInfos {
-      margin-top: 20px;
-      text-align: center;
-    }
-    #modifierInfos button {
-      background-color: #2196F3;
-      color: white;
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    #modifierInfos button:hover {
-      background-color: #1976D2;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Envoyer une note d'honoraires</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Note d'honoraire</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        max-width: 600px;
+        margin: 3rem auto;
+        padding: 1rem;
+        background: #f9f9f9;
+      }
+      label {
+        display: block;
+        margin-top: 1rem;
+        font-weight: bold;
+      }
+      input {
+        width: 100%;
+        padding: 0.6rem;
+        margin-top: 0.3rem;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+      }
+      button {
+        margin-top: 2rem;
+        width: 100%;
+        padding: 1rem;
+        font-size: 1rem;
+        background-color: #111827;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      #modifierInfos {
+        margin-top: 2rem;
+        text-align: center;
+      }
+      #modifierInfos button {
+        background-color: #2196F3;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.2rem;
+        font-size: 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      #modifierInfos button:hover {
+        background-color: #1976D2;
+      }
+      #message {
+        margin-top: 1rem;
+        font-weight: bold;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Envoyer une note d'honoraire</h1>
 
     <form id="monFormulaire">
-      <input type="text" id="prenom" placeholder="Prénom patient" required>
-      <input type="text" id="nom" placeholder="Nom patient" required>
-      <input type="text" id="secu" placeholder="Numéro Sécurité Sociale" required>
-      <input type="text" id="contrat" placeholder="Numéro de contrat d'assurance">
-      <input type="email" id="email" placeholder="Email du patient" required>
+      <label for="prenom">Prénom du patient</label>
+      <input type="text" id="prenom" name="prenom" required />
+
+      <label for="nom">Nom du patient</label>
+      <input type="text" id="nom" name="nom" required />
+
+      <label for="secu">Numéro de sécurité sociale</label>
+      <input type="text" id="secu" name="secu" required />
+
+      <label for="contrat">Numéro de contrat d'assurance</label>
+      <input type="text" id="contrat" name="contrat" />
+
+      <label for="email">Email du patient</label>
+      <input type="email" id="email" name="email" required />
+
       <button type="submit">Envoyer la note</button>
     </form>
 
@@ -77,53 +85,54 @@
       <button onclick="window.open('note.html', '_blank')">Modifier mes infos Cabinet</button>
     </div>
 
-  </div>
+    <div id="message"></div>
 
-  <script>
-    function getOsteoSettings() {
-      const settings = JSON.parse(localStorage.getItem('osteopatheSettings'));
-      return settings || {};
-    }
-
-    document.getElementById('monFormulaire').addEventListener('submit', async function(e) {
-      e.preventDefault();
-
-      const settings = getOsteoSettings();
-
-      const data = {
-        prenom: document.getElementById('prenom').value,
-        nom: document.getElementById('nom').value,
-        secu: document.getElementById('secu').value,
-        contrat: document.getElementById('contrat').value,
-        email: document.getElementById('email').value,
-        cabinet: settings.nomOsteo,
-        adresse: settings.adresse,
-        telephone: settings.telephone,
-        prix: settings.prix || 60,
-        siret: settings.siret,
-        adeli: settings.adeli
-      };
-
-      try {
-        const response = await fetch('/api/send-note', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        });
-
-        const result = await response.json();
-        if (response.ok) {
-          alert('Note envoyée avec succès ✅');
-        } else {
-          alert('Erreur lors de l\'envoi : ' + result.error);
-        }
-      } catch (err) {
-        console.error('Erreur fetch :', err);
-        alert('Erreur réseau');
+    <script>
+      function getOsteoSettings() {
+        const settings = JSON.parse(localStorage.getItem('osteopatheSettings'));
+        return settings || {};
       }
-    });
-  </script>
-</body>
+
+      document.getElementById('monFormulaire').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const message = document.getElementById('message');
+        message.textContent = "Envoi en cours...";
+
+        const settings = getOsteoSettings();
+
+        const data = {
+          prenom: document.getElementById('prenom').value.trim(),
+          nom: document.getElementById('nom').value.trim(),
+          secu: document.getElementById('secu').value.trim(),
+          contrat: document.getElementById('contrat').value.trim(),
+          email: document.getElementById('email').value.trim(),
+          cabinet: settings.nomOsteo,
+          adresse: settings.adresse,
+          telephone: settings.telephone,
+          prix: settings.prix || 60,
+          siret: settings.siret,
+          adeli: settings.adeli
+        };
+
+        try {
+          const response = await fetch('/api/send-note', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+
+          const result = await response.json();
+          if (response.ok) {
+            message.textContent = `Note envoyée avec succès à ${data.email} ✅`;
+            document.getElementById('monFormulaire').reset();
+          } else {
+            message.textContent = "Erreur lors de l'envoi : " + result.error;
+          }
+        } catch (err) {
+          console.error('Erreur fetch :', err);
+          message.textContent = "Erreur réseau.";
+        }
+      });
+    </script>
+  </body>
 </html>
