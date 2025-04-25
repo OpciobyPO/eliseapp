@@ -2,7 +2,10 @@
   "name": "note-honoraire",
   "version": "1.0.0",
   "type": "module",
+  "scripts": {
+    "vercel-build": "echo 'Nothing to build'"
+  },
   "dependencies": {
-    "nodemailer": "^6.9.1",
+    "nodemailer": "^6.9.1"
   }
 }
