@@ -42,6 +42,22 @@
     form button:hover {
       background-color: #45a049;
     }
+    #modifierInfos {
+      margin-top: 20px;
+      text-align: center;
+    }
+    #modifierInfos button {
+      background-color: #2196F3;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #modifierInfos button:hover {
+      background-color: #1976D2;
+    }
   </style>
 </head>
 <body>
@@ -56,6 +72,11 @@
       <input type="email" id="email" placeholder="Email du patient" required>
       <button type="submit">Envoyer la note</button>
     </form>
+
+    <div id="modifierInfos">
+      <button onclick="window.open('note.html', '_blank')">Modifier mes infos Cabinet</button>
+    </div>
+
   </div>
 
   <script>
