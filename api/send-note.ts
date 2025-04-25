@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
     let y = height - 50;
 
-    // Bloc Cabinet - Centré
+    // Fonction pour centrer du texte
     const centerText = (text, fontUsed, size, yPos) => {
       const textWidth = fontUsed.widthOfTextAtSize(text, size);
       page.drawText(text, {
@@ -25,6 +25,7 @@ export default async function handler(req, res) {
       });
     };
 
+    // Bloc Cabinet
     centerText(cabinet, fontBold, 16, y);
     y -= 20;
     centerText(adresse, font, 12, y);
@@ -34,11 +35,11 @@ export default async function handler(req, res) {
     y -= 40;
 
     // Titre "NOTE D'HONORAIRES"
-    centerText('NOTE D\'HONORAIRES', fontBold, 18, y);
+    centerText("NOTE D'HONORAIRES", fontBold, 20, y);
 
-    y -= 40;
+    y -= 50;
 
-    // Date - aligné à gauche
+    // Date
     page.drawText(`Fait le ${new Date().toLocaleDateString('fr-FR')}`, {
       x: 50,
       y: y,
@@ -49,12 +50,12 @@ export default async function handler(req, res) {
 
     y -= 40;
 
-    // Tableau Acte / Honoraires
+    // Bloc Acte / Honoraires (aligné mieux)
     page.drawText('Acte', { x: 50, y: y, size: 12, font: fontBold });
-    page.drawText('Honoraires', { x: width - 150, y: y, size: 12, font: fontBold });
+    page.drawText('Honoraires', { x: 300, y: y, size: 12, font: fontBold });
     y -= 20;
     page.drawText('Consultation d\'ostéopathie', { x: 50, y: y, size: 12, font: font });
-    page.drawText(`${prix}€`, { x: width - 150, y: y, size: 12, font: font });
+    page.drawText(`${prix}€`, { x: 300, y: y, size: 12, font: font });
 
     y -= 50;
 
@@ -69,7 +70,7 @@ export default async function handler(req, res) {
     y -= 30;
     page.drawText('N° de contrat d\'assurance :', { x: 50, y: y, size: 12, font: fontBold });
     y -= 20;
-    page.drawText(`${contrat}`, { x: 50, y: y, size: 12, font: font });
+    page.drawText(`${contrat || '-'}`, { x: 50, y: y, size: 12, font: font });
 
     y -= 50;
 
@@ -88,7 +89,7 @@ export default async function handler(req, res) {
 
     const pdfBytes = await pdfDoc.save();
 
-    // Envoi de l'email avec pièce jointe
+    // Envoi du mail avec PDF
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
