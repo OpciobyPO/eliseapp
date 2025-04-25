@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import nodemailer from 'nodemailer';
 import puppeteer from 'puppeteer';
 
@@ -30,6 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       headless: 'new',
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
+
     const page = await browser.newPage();
     await page.setContent(html);
     const pdfBuffer = await page.pdf({ format: 'A4' });
@@ -60,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(200).json({ message: 'Note envoyée' });
 
   } catch (error: any) {
-    console.error('Erreur:', error);
-    return res.status(500).json({ error: 'Erreur serveur' });
+    console.error('Erreur complète:', error);
+    return res.status(500).json({ error: error.message || 'Erreur serveur' });
   }
 }
