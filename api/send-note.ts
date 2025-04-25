@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nodemailer from 'nodemailer';
-//import puppeteer from 'puppeteer';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -14,28 +13,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const html = `
-      <html>
-        <body>
-          <h1>Note d'honoraire</h1>
-          <p>Patient : ${prenom} ${nom}</p>
-          <p>Numéro de sécurité sociale : ${secu}</p>
-          <p>Date : ${new Date().toLocaleDateString()}</p>
-          <p>Montant : 60€</p>
-        </body>
-      </html>
-    `;
-
-    const browser = await puppeteer.launch({
-      headless: 'new',
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-
-    const page = await browser.newPage();
-    await page.setContent(html);
-    const pdfBuffer = await page.pdf({ format: 'A4' });
-    await browser.close();
-
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -44,24 +21,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     });
 
+    const messageHTML = `
+      <h2>Note d'honoraires</h2>
+      <p><strong>Date :</strong> ${new Date().toLocaleDateString()}</p>
+      <p><strong>Patient :</strong> ${prenom} ${nom}</p>
+      <p><strong>Numéro de Sécurité Sociale :</strong> ${secu}</p>
+      <p><strong>Acte :</strong> Consultation d'ostéopathie</p>
+      <p><strong>Montant :</strong> 60€</p>
+      <hr />
+      <p>Élise Cévènes Colliou — Ostéopathe D.O.</p>
+      <p>2 Place Cazalere, 31410 Le Fauga</p>
+      <p>Tél : 06 71 33 53 58</p>
+      <p>SIRET : 901 721 023 000 11 — ADELI : 310 016 084</p>
+    `;
+
     await transporter.sendMail({
       from: `"Cabinet Ostéo" <${process.env.EMAIL_FROM}>`,
       to: email,
       cc: 'elise.cevenes.osteopathe@gmail.com',
-      subject: `Note d'honoraire - ${prenom} ${nom}`,
-      text: 'Veuillez trouver ci-joint votre note d’honoraire.',
-      attachments: [
-        {
-          filename: `Note_${prenom}_${nom}.pdf`,
-          content: pdfBuffer
-        }
-      ]
+      subject: `Votre note d'honoraire – ${prenom} ${nom}`,
+      html: messageHTML
     });
 
-    return res.status(200).json({ message: 'Note envoyée' });
+    return res.status(200).json({ message: 'Mail envoyé sans PDF ✅' });
 
   } catch (error: any) {
-    console.error('Erreur complète:', error);
+    console.error('Erreur email :', error);
     return res.status(500).json({ error: error.message || 'Erreur serveur' });
   }
 }
