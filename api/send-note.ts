@@ -1,36 +1,55 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import nodemailer from 'nodemailer';
-import html_to_pdf from 'html-pdf-node'; // nouvelle ligne
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { prenom, nom, secu, email, contrat, cabinet, adresse, telephone, prix, siret, adeli } = req.body;
 
   try {
-    const messageHTML = `
-      <h1>Cabinet d'Ostéopathie</h1>
-      <h2>${cabinet}</h2>
-      <p>${adresse}</p>
-      <p>${telephone}</p>
-      <hr>
-      <h2>Note d'honoraires</h2>
-      <p><strong>Date :</strong> ${new Date().toLocaleDateString()}</p>
-      <p><strong>Acte :</strong> Consultation d'ostéopathie</p>
-      <p><strong>Honoraires :</strong> ${prix}€</p>
-      <hr>
-      <h2>Informations Patient</h2>
-      <p><strong>Patient :</strong> ${prenom} ${nom}</p>
-      <p><strong>Numéro de Sécurité Sociale :</strong> ${secu}</p>
-      <p><strong>Numéro de contrat d'assurance :</strong> ${contrat}</p>
-      <hr>
-      <h2>Ostéopathe</h2>
-      <p><strong>Nom :</strong> ${cabinet}</p>
-      <p><strong>Numéro SIRET :</strong> ${siret}</p>
-      <p><strong>Numéro ADELI :</strong> ${adeli}</p>
-    `;
+    // 1. Créer un document PDF
+    const pdfDoc = await PDFDocument.create();
+    const page = pdfDoc.addPage([595, 842]); // A4
+    const { width, height } = page.getSize();
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const fontSize = 12;
 
-    // Convertir HTML en PDF Buffer
-    const pdfBuffer = await html_to_pdf.generatePdf({ content: messageHTML }, { format: 'A4' });
+    let y = height - 50;
 
+    const lignes = [
+      "Cabinet d'Ostéopathie",
+      cabinet,
+      adresse,
+      telephone,
+      "",
+      "Note d'honoraires",
+      `Date : ${new Date().toLocaleDateString()}`,
+      "Acte : Consultation d'ostéopathie",
+      `Honoraires : ${prix}€`,
+      "",
+      "Informations Patient",
+      `Patient : ${prenom} ${nom}`,
+      `N° Sécurité Sociale : ${secu}`,
+      `N° contrat assurance : ${contrat}`,
+      "",
+      "Ostéopathe",
+      `Nom : ${cabinet}`,
+      `SIRET : ${siret}`,
+      `ADELI : ${adeli}`
+    ];
+
+    lignes.forEach((text) => {
+      page.drawText(text, {
+        x: 50,
+        y: y,
+        size: fontSize,
+        font: font,
+        color: rgb(0, 0, 0),
+      });
+      y -= 20;
+    });
+
+    const pdfBytes = await pdfDoc.save();
+
+    // 2. Envoi par mail
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -48,7 +67,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       attachments: [
         {
           filename: `Note_${prenom}_${nom}.pdf`,
-          content: pdfBuffer
+          content: pdfBytes
         }
       ]
     });
