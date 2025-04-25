@@ -21,19 +21,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     });
 
-   const messageHTML = `
-      <h2>Note d'honoraires</h2>
-      <p><strong>Date :</strong> ${new Date().toLocaleDateString()}</p>
-      <p><strong>Patient :</strong> ${prenom} ${nom}</p>
-      <p><strong>Numéro de Sécurité Sociale :</strong> ${secu}</p>
-      <p><strong>Acte :</strong> Consultation d'ostéopathie</p>
-      <p><strong>Montant :</strong> 60€</p>
-      <hr />
-      <p>Élise Cévènes Colliou — Ostéopathe D.O.</p>
-      <p>2 Place Cazalere, 31410 Le Fauga</p>
-      <p>Tél : 06 71 33 53 58</p>
-      <p>SIRET : 901 721 023 000 11 — ADELI : 310 016 084</p>
-    `;
+
+
+const messageHTML = `
+  <h1>Cabinet d'Ostéopathie</h1>
+  <h2>${cabinet}</h2>
+  <p>${adresse}</p>
+  <p>${telephone}</p>
+
+  <hr>
+
+  <h2>Note d'honoraires</h2>
+  <p><strong>Date :</strong> ${new Date().toLocaleDateString()}</p>
+  <p><strong>Acte :</strong> Consultation d'ostéopathie</p>
+  <p><strong>Honoraires :</strong> ${prix}€</p>
+
+  <hr>
+
+  <h2>Informations Patient</h2>
+  <p><strong>Patient :</strong> ${prenom} ${nom}</p>
+  <p><strong>Numéro de Sécurité Sociale :</strong> ${secu}</p>
+  <p><strong>Numéro de contrat d'assurance :</strong> ${contrat}</p>
+
+  <hr>
+
+  <h2>Ostéopathe</h2>
+  <p><strong>Nom :</strong> ${cabinet}</p>
+  <p><strong>Numéro SIRET :</strong> ${siret}</p>
+  <p><strong>Numéro ADELI :</strong> ${adeli}</p>
+`;
+
+    
     await transporter.sendMail({
       from: `"Cabinet Ostéo" <${process.env.EMAIL_FROM}>`,
       to: email,
