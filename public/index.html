@@ -67,6 +67,22 @@
       const form = document.getElementById('note-form');
       const message = document.getElementById('message');
 
+      const settings = getOsteoSettings();
+    
+      const data = {
+        prenom: document.getElementById('prenom').value,
+        nom: document.getElementById('nom').value,
+        secu: document.getElementById('secu').value,
+        email: document.getElementById('email').value,
+        contrat: document.getElementById('contrat').value,
+        cabinet: settings.nomOsteo,
+        adresse: settings.adresse,
+        telephone: settings.telephone,
+        prix: settings.prix || 60,
+        siret: settings.siret,
+        adeli: settings.adeli
+      };
+      
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         message.textContent = "";
