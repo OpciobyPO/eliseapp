@@ -3,6 +3,6 @@ export default {
       directory: "public",
     },
     api: {
-      directory: "API",
+      directory: "api",
     },
   };
