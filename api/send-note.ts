@@ -6,8 +6,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: 'Méthode non autorisée' });
   }
 
-  const { prenom, nom, secu, email } = req.body;
-
+const { prenom, nom, secu, email, contrat, cabinet, adresse, telephone, prix, siret, adeli } = req.body;
+  
   if (!prenom || !nom || !secu || !email) {
     return res.status(400).json({ error: 'Champs manquants' });
   }
