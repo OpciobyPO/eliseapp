@@ -29,6 +29,62 @@
 </head>
 <body>
 
+  <form id="noteForm">
+  <h3>Informations Cabinet</h3>
+  <input type="text" id="nomOsteo" placeholder="Nom Ostéo" />
+  <input type="text" id="adresseOsteo" placeholder="Adresse" />
+  <input type="text" id="telephoneOsteo" placeholder="Téléphone" />
+
+  <h3>Note d'honoraires</h3>
+  <input type="text" id="prix" placeholder="Honoraires (€)" value="60" />
+
+  <h3>Informations Patient</h3>
+  <input type="text" id="patient" placeholder="Nom du patient" />
+  <input type="text" id="secu" placeholder="Numéro de sécurité sociale" />
+  <input type="text" id="contrat" placeholder="N° contrat assurance" />
+
+  <h3>Ostéopathe</h3>
+  <input type="text" id="nomOsteo2" placeholder="Nom Ostéo" />
+  <input type="text" id="siret" placeholder="SIRET" />
+  <input type="text" id="adeli" placeholder="ADELI" />
+
+  <h3>Signature</h3>
+  <input type="file" id="signature" accept="image/*" />
+
+  <br><br>
+  <button type="button" onclick="updateNote()">Mettre à jour la note</button>
+</form>
+
+<div id="noteAffichee">
+  <h1>Cabinet d'Ostéopathie</h1>
+  <h2 id="nomOsteoDisplay"></h2>
+  <p id="adresseOsteoDisplay"></p>
+  <p id="telephoneOsteoDisplay"></p>
+
+  <hr>
+
+  <h2>Note d'honoraires</h2>
+  <p><strong>Date :</strong> <span id="dateDuJour"></span></p>
+  <p><strong>Acte :</strong> Consultation d'ostéopathie</p>
+  <p><strong>Honoraires :</strong> <span id="prixDisplay">60€</span></p>
+
+  <hr>
+
+  <h2>Informations Patient</h2>
+  <p><strong>Patient :</strong> <span id="patientDisplay"></span></p>
+  <p><strong>Numéro de Sécurité Sociale :</strong> <span id="secuDisplay"></span></p>
+  <p><strong>Numéro de contrat d'assurance :</strong> <span id="contratDisplay"></span></p>
+
+  <hr>
+
+  <h2>Ostéopathe</h2>
+  <p><strong>Nom :</strong> <span id="nomOsteo2Display"></span></p>
+  <p><strong>Numéro SIRET :</strong> <span id="siretDisplay"></span></p>
+  <p><strong>Numéro ADELI :</strong> <span id="adeliDisplay"></span></p>
+
+  <div id="signatureDisplay" style="margin-top:20px;"></div>
+</div>
+
   <h1>Cabinet d'Ostéopathie</h1>
   <h2>Élise Cévènes Colliou</h2>
 
@@ -61,6 +117,35 @@
     <p><strong>Numéro SIRET :</strong> 901 721 023 000 11</p>
     <p><strong>Numéro ADELI :</strong> 310 016 084</p>
   </div>
+<script>
+function updateNote() {
+  document.getElementById('nomOsteoDisplay').innerText = document.getElementById('nomOsteo').value;
+  document.getElementById('adresseOsteoDisplay').innerText = document.getElementById('adresseOsteo').value;
+  document.getElementById('telephoneOsteoDisplay').innerText = document.getElementById('telephoneOsteo').value;
 
+  document.getElementById('prixDisplay').innerText = document.getElementById('prix').value + "€";
+
+  document.getElementById('patientDisplay').innerText = document.getElementById('patient').value;
+  document.getElementById('secuDisplay').innerText = document.getElementById('secu').value;
+  document.getElementById('contratDisplay').innerText = document.getElementById('contrat').value;
+
+  document.getElementById('nomOsteo2Display').innerText = document.getElementById('nomOsteo2').value;
+  document.getElementById('siretDisplay').innerText = document.getElementById('siret').value;
+  document.getElementById('adeliDisplay').innerText = document.getElementById('adeli').value;
+
+  const file = document.getElementById('signature').files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('signatureDisplay').innerHTML = `<img src="${e.target.result}" alt="Signature" style="max-width:200px;">`;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+window.onload = function() {
+  document.getElementById('dateDuJour').innerText = new Date().toLocaleDateString();
+}
+</script>
 </body>
 </html>
