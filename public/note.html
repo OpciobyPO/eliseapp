@@ -105,6 +105,8 @@
       <h2 id="nomOsteoDisplay"></h2>
       <p id="adresseOsteoDisplay"></p>
       <p id="telephoneOsteoDisplay"></p>
+      <p id="mailOsteoDisplay"></p>
+
 
       <hr>
 
@@ -142,7 +144,7 @@
         document.getElementById('nomOsteo2Display').innerText = document.getElementById('nomOsteo2').value;
         document.getElementById('siretDisplay').innerText = document.getElementById('siret').value;
         document.getElementById('adeliDisplay').innerText = document.getElementById('adeli').value;
-        document.getElementById('emailOsteo').value  // 🆕 ici
+        document.getElementById('emailOsteo').innerText = document.getElementById('mailOsteoDisplay').value;
 
 
         const file = document.getElementById('signature').files[0];
