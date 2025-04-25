@@ -21,24 +21,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     });
 
-    const messageHTML = `
-      <h2>Note d'honoraires</h2>
-      <p><strong>Date :</strong> ${new Date().toLocaleDateString()}</p>
-      <p><strong>Patient :</strong> ${prenom} ${nom}</p>
-      <p><strong>Numéro de Sécurité Sociale :</strong> ${secu}</p>
-      <p><strong>Acte :</strong> Consultation d'ostéopathie</p>
-      <p><strong>Montant :</strong> 60€</p>
-      <hr />
-      <p>Élise Cévènes Colliou — Ostéopathe D.O.</p>
-      <p>2 Place Cazalere, 31410 Le Fauga</p>
-      <p>Tél : 06 71 33 53 58</p>
-      <p>SIRET : 901 721 023 000 11 — ADELI : 310 016 084</p>
-    `;
+    const messageHTML = public/note.html ;
 
     await transporter.sendMail({
       from: `"Cabinet Ostéo" <${process.env.EMAIL_FROM}>`,
       to: email,
-      cc: 'elise.cevenes.osteopathe@gmail.com',
+     // cc: 'elise.cevenes.osteopathe@gmail.com',
       subject: `Votre note d'honoraire – ${prenom} ${nom}`,
       html: messageHTML
     });
