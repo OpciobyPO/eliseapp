@@ -116,5 +116,21 @@ window.onload = function() {
   document.getElementById('dateDuJour').innerText = new Date().toLocaleDateString();
 }
 </script>
+
+<script>
+function saveSettings() {
+  const settings = {
+    nomOsteo: document.getElementById('nomOsteo').value,
+    adresse: document.getElementById('adresseOsteo').value,
+    telephone: document.getElementById('telephoneOsteo').value,
+    prix: document.getElementById('prix').value,
+    nomOsteo2: document.getElementById('nomOsteo2').value,
+    siret: document.getElementById('siret').value,
+    adeli: document.getElementById('adeli').value
+  };
+  localStorage.setItem('osteopatheSettings', JSON.stringify(settings));
+  alert('Paramètres enregistrés avec succès !');
+}
+</script>
 </body>
 </html>
