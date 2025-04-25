@@ -101,5 +101,13 @@
     <button type="button" onclick="window.open('note.html', '_blank')">
   Voir la note d'honoraires
     </button>
+
+    <script>
+    function getOsteoSettings() {
+      const settings = JSON.parse(localStorage.getItem('osteopatheSettings'));
+      return settings || {}; // Si jamais rien n'est encore enregistré
+    }
+    </script>
+
   </body>
 </html>
