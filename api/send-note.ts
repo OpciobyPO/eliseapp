@@ -53,7 +53,7 @@ const messageHTML = `
 
     
     await transporter.sendMail({
-      from: `"Cabinet Ostéo" <${process.env.EMAIL_FROM}>`,
+      from: `${cabinet} <${process.env.EMAIL_FROM}>`,
       to: email,
      // cc: 'elise.cevenes.osteopathe@gmail.com',
       subject: `Votre note d'honoraire – ${prenom} ${nom}`,
